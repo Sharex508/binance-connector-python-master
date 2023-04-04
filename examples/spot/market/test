@@ -1,0 +1,9 @@
+from binance.spot import Spot as Client
+
+client = Client()
+exchange_info = client.futures_exchange_info()
+usdt = set()
+for s in exchange_info['symbols']:
+    if s['symbol'].endswith('USDT'):
+        usdt.add(s['symbol'])
+print(usdt)
