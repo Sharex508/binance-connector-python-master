@@ -23,7 +23,7 @@ import ccxt
 
 def get_db_connection():
     connection = psycopg2.connect(user="postgres",
-                                  password="harsha508",
+                                  password="Harsha508",
                                   host="database-1.cigflazwbdyg.ap-south-1.rds.amazonaws.com",
                                   port="5432",
                                   database="crypto")
@@ -53,7 +53,7 @@ def get_results():
     connection = None
     try:
         connection = psycopg2.connect(user="postgres",
-                                  password="harsha508",
+                                  password="Harsha508",
                                   host="database-1.cigflazwbdyg.ap-south-1.rds.amazonaws.com",
                                   port="5432",
                                   database="crypto")

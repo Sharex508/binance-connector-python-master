@@ -13,7 +13,7 @@ from binance.lib.utils import config_logging
 def table_Delete_crypto():
         try:
             with psycopg2.connect(user="postgres",
-                                  password="harsha508",
+                                  password="Harsha508",
                                   host="database-1.cigflazwbdyg.ap-south-1.rds.amazonaws.com",
                                   port="5432",
                                   database="crypto") as conn:
@@ -28,7 +28,7 @@ def table_Delete_crypto():
 def table_Create_crypto():
     try:
         with psycopg2.connect(user="postgres",
-                                  password="harsha508",
+                                  password="Harsha508",
                                   host="database-1.cigflazwbdyg.ap-south-1.rds.amazonaws.com",
                                   port="5432",
                                   database="crypto") as connection:
@@ -79,7 +79,7 @@ def getall_data(filter='USDT'):
 def insert_data_db(resp):
     try:
         connection = psycopg2.connect(user="postgres",
-                                  password="harsha508",
+                                  password="HSSSarsha508",
                                   host="database-1.cigflazwbdyg.ap-south-1.rds.amazonaws.com",
                                   port="5432",
                                   database="crypto")
