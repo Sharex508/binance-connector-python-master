@@ -16,6 +16,8 @@ from concurrent.futures import ThreadPoolExecutor
 client = Client()
 import re
 import pandas as pd
+import ccxt
+
 
 
 
@@ -127,6 +129,34 @@ def task(db_resp, api_resp, data):
                 notisend({"symbol": ele, "side": "buy", "type": "limit", "initial_price": initial_price, "purchasing_price": api_last_price, "db_margin": db_margin, "quantity": quantity})
                 #update_coin_record(dbdata)
                 print(f"Entered {ele}")
+
+
+
+# Replace these with your Binance API key and secret key
+api_key = 'NGhlcbaJhbGBXzim10ij6B6MSpXq19eq5E62MOyHhWPm5sbaBxHAPSfwkOZ1o6CK'
+api_secret = 'H3RK3yPS90Foi8uRiFMBkdIpIx1TvHDIqPpDo58ZfLPlAtHclzhOAZME4YZ5Uprj'
+client = Client(api_key, api_secret)
+# Initialize Binance client with ccxt
+binance = ccxt.binance({
+    'apiKey': api_key,
+    'secret': api_secret
+})
+
+# Replace SYMBOL, QUANTITY, and PRICE with your desired values
+symbol = 'BNB/USDT'
+quantity = 0.1  # The amount of BNB you want to buy
+price = 400  # The price at which you want to buy BNB
+
+def create_limit_buy_order(symbol, quantity, price):
+    try:
+        # Create a limit buy order
+        order = binance.create_limit_buy_order(symbol, quantity, price)
+        print(f"Limit buy order created: {order}")
+    except ccxt.BaseError as e:
+        print(f"Error: {e}")
+        # this is for limit less order : order = binance.create_market_buy_order(symbol, quantity)
+
+
 
 
 def coin_buy(data):
