@@ -79,7 +79,7 @@ def getall_data(filter='USDT'):
 def insert_data_db(resp):
     try:
         connection = psycopg2.connect(user="postgres",
-                                  password="HSSSarsha508",
+                                  password="Harsha508",
                                   host="database-1.cigflazwbdyg.ap-south-1.rds.amazonaws.com",
                                   port="5432",
                                   database="crypto")
