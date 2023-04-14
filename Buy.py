@@ -50,12 +50,13 @@ def get_data_from_wazirx(filter='USDT'):
 
 
 def get_results():
+    connection = None
     try:
         connection = psycopg2.connect(user="postgres",
-                                          password="harsha508",
-                                          host="localhost",
-                                          port="5432",
-                                          database="postgres")
+                                  password="harsha508",
+                                  host="database-1.cigflazwbdyg.ap-south-1.rds.amazonaws.com",
+                                  port="5432",
+                                  database="crypto")
         connection.autocommit = True
 
         cursor = connection.cursor()
@@ -72,7 +73,7 @@ def get_results():
                data.append(dict(zip(keys, obj)))
              
             return data
-            print(data);
+            print(data)
         except Exception as e:
             print(e)
     except Exception as e:
@@ -82,6 +83,7 @@ def get_results():
             cursor.close()
             connection.close()
             print("PostgreSQL connection is closed")
+
     
 def get_diff_of_db_api_values():
     start = time.time()
@@ -115,20 +117,15 @@ def task(db_resp, api_resp, data):
             continue
         if api_match_data['symbol'] == db_match_data['symbol']:
             api_last_price = float(api_match_data['lastPrice'])
-            print(api_last_price)
             db_margin = float(db_match_data['margin'])
-            print(db_margin)
             initial_price = float(db_match_data['intialPrice'])
-            print(initial_price)
 
 
             if api_last_price >= db_margin:
-                print("entered")
                 quantity = 100 / api_last_price
                 dbdata = {"symbol": ele, "side": "buy", "type": "limit", "price": api_last_price, "quantity": quantity, "recvWindow": 10000, "timestamp": int(time.time() * 1000)}
                 notisend({"symbol": ele, "side": "buy", "type": "limit", "initial_price": initial_price, "purchasing_price": api_last_price, "db_margin": db_margin, "quantity": quantity})
                 #update_coin_record(dbdata)
-                print(f"Entered {ele}")
 
 
 
@@ -188,5 +185,5 @@ def show():
     while 1:
         get_diff_of_db_api_values()
         time.sleep(10)
-#show()
-get_diff_of_db_api_values()
+show()
+

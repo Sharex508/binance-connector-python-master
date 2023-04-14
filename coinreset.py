@@ -1,5 +1,6 @@
 from cgitb import text
 import string
+import time
 import psycopg2
 from psycopg2 import Error
 import requests
@@ -11,7 +12,11 @@ from binance.lib.utils import config_logging
 
 def table_Delete_crypto():
         try:
-            with psycopg2.connect(database="postgres", user='postgres', password='harsha508', host='localhost', port='5432') as conn:
+            with psycopg2.connect(user="postgres",
+                                  password="harsha508",
+                                  host="database-1.cigflazwbdyg.ap-south-1.rds.amazonaws.com",
+                                  port="5432",
+                                  database="crypto") as conn:
                 with conn.cursor() as cursor:
                     cursor.execute("DROP TABLE IF EXISTS trading_test")
                     cursor.execute("DROP TABLE IF EXISTS coin_buy")
@@ -23,25 +28,12 @@ def table_Delete_crypto():
 def table_Create_crypto():
     try:
         with psycopg2.connect(user="postgres",
-                              password="harsha508",
-                              host="localhost",
-                              port="5432",
-                              database="postgres") as connection:
+                                  password="harsha508",
+                                  host="database-1.cigflazwbdyg.ap-south-1.rds.amazonaws.com",
+                                  port="5432",
+                                  database="crypto") as connection:
             with connection.cursor() as cursor:
                 # SQL query to create a new table
-                create_table_query = '''CREATE TABLE IF NOT EXISTS coin_buy
-                        (
-                        symbol           TEXT    NOT NULL,
-                        highPrice         TEXT,
-                        lastPrice         TEXT,
-                        purchasePrice     TEXT,
-                        margin            TEXT,
-                        sellMargin        TEXT,
-                        
-                        status TEXT
-                        ); '''
-                cursor.execute(create_table_query)
-                print("Table created successfully in PostgreSQL - coin_buy")
 
                 create_table_query = '''CREATE TABLE IF NOT EXISTS trading
                         (
@@ -49,7 +41,7 @@ def table_Create_crypto():
                         intialPrice       TEXT,
                         highPrice         TEXT,
                         lastPrice         TEXT,
-                        bp_margin         TEXT,
+                        margin            TEXT,
                         purchasePrice     TEXT,
                         ap_margin         TEXT,
                         sell_Margin       TEXT,
@@ -87,10 +79,10 @@ def getall_data(filter='USDT'):
 def insert_data_db(resp):
     try:
         connection = psycopg2.connect(user="postgres",
-                                      password="harsha508",
-                                      host="localhost",
-                                      port="5432",
-                                      database="postgres")
+                                  password="harsha508",
+                                  host="database-1.cigflazwbdyg.ap-south-1.rds.amazonaws.com",
+                                  port="5432",
+                                  database="crypto")
         connection.autocommit = True
 
         cursor = connection.cursor()
@@ -115,6 +107,14 @@ def insert_data_db(resp):
             connection.close()
             print("PostgreSQL connection is closed")
 
-table_Delete_crypto()
-table_Create_crypto ()
-getall_data()
+
+def show():
+
+    while 1:
+        table_Delete_crypto()
+        table_Create_crypto ()
+        getall_data()
+        time.sleep(86400)
+show()
+
+
