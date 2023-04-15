@@ -125,7 +125,7 @@ def task(db_resp, api_resp, data):
                 quantity = 100 / api_last_price
                 dbdata = {"symbol": ele, "side": "buy", "type": "limit", "price": api_last_price, "quantity": quantity, "recvWindow": 10000, "timestamp": int(time.time() * 1000)}
                 notisend({"symbol": ele, "side": "buy", "type": "limit", "initial_price": initial_price, "purchasing_price": api_last_price, "db_margin": db_margin, "quantity": quantity})
-                #update_coin_record(dbdata)
+                update_coin_record(dbdata)
 
 
 
