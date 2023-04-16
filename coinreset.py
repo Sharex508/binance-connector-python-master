@@ -98,9 +98,7 @@ def insert_data_db(resp):
 
     except Exception as error:
         logging.error(f"Error while connecting to PostgreSQL: {error}")
-    finally:
-        if connection:
-            logging.info("PostgreSQL connection is closed")
+
 
 
 def main():
