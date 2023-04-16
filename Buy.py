@@ -108,11 +108,9 @@ def get_diff_of_db_api_values():
 def task(db_resp, api_resp, data):
     for ele in data:
         db_match_data = next((item for item in db_resp if item["symbol"] == ele), None)
-        print(db_match_data)
         if not db_match_data:
             continue
         api_match_data = next((item for item in api_resp if item["symbol"] == ele), None)
-        print(api_match_data)
         if not api_match_data:
             continue
         if api_match_data['symbol'] == db_match_data['symbol']:
@@ -120,11 +118,12 @@ def task(db_resp, api_resp, data):
             db_margin = float(db_match_data['margin'])
             initial_price = float(db_match_data['intialPrice'])
 
-
             if api_last_price >= db_margin:
                 quantity = 100 / api_last_price
                 dbdata = {"symbol": ele, "side": "buy", "type": "limit", "price": api_last_price, "quantity": quantity, "recvWindow": 10000, "timestamp": int(time.time() * 1000)}
                 notisend({"symbol": ele, "side": "buy", "type": "limit", "initial_price": initial_price, "purchasing_price": api_last_price, "db_margin": db_margin, "quantity": quantity})
+                
+                # Update coin record here
                 update_coin_record(dbdata)
 
 
