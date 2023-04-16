@@ -11,18 +11,18 @@ from binance.spot import Spot as Client
 from binance.lib.utils import config_logging 
 
 def table_Delete_crypto():
-        try:
-            with psycopg2.connect(user="postgres",
-                                  password="Harsha508",
-                                  host="database-1.cigflazwbdyg.ap-south-1.rds.amazonaws.com",
-                                  port="5432",
-                                  database="crypto") as conn:
-                with conn.cursor() as cursor:
-                    cursor.execute("DROP TABLE IF EXISTS trading_test")
-                    cursor.execute("DROP TABLE IF EXISTS coin_buy")
-                    print("Tables deleted successfully...")
-        except psycopg2.Error as e:
-            print("Error deleting tables: ", e)
+    try:
+        with psycopg2.connect(user="postgres",
+                              password="Harsha508",
+                              host="database-1.cigflazwbdyg.ap-south-1.rds.amazonaws.com",
+                              port="5432",
+                              database="crypto") as conn:
+            with conn.cursor() as cursor:
+                cursor.execute("DELETE FROM trading_test")
+                print("Rows deleted successfully...")
+    except psycopg2.Error as e:
+        print("Error deleting rows: ", e)
+
 
 
 def table_Create_crypto():
