@@ -72,7 +72,7 @@ def getall_data(filter='USDT'):
             "margin": marg,
             "purchasePrice": ""
         })
-        print('completed')
+
     
     return insert_data_db(resp)
 
