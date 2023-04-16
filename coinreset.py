@@ -5,18 +5,15 @@ import requests
 import logging
 
 logging.basicConfig(level=logging.INFO)
-import os
-from dotenv import load_dotenv
 
-load_dotenv()
 
 def get_database_connection():
     return psycopg2.connect(
-        user=os.getenv("POSTGRES_USER"),
-        password=os.getenv("POSTGRES_PASSWORD"),
-        host=os.getenv("POSTGRES_HOST"),
-        port=os.getenv("POSTGRES_PORT"),
-        database=os.getenv("POSTGRES_DB"),
+        user="postgres",
+        password="Harsha508",
+        host="database-1.cigflazwbdyg.ap-south-1.rds.amazonaws.com",
+        port="5432",
+        database="crypto",
     )
 
 
@@ -98,7 +95,9 @@ def insert_data_db(resp):
 
     except Exception as error:
         logging.error(f"Error while connecting to PostgreSQL: {error}")
-
+    finally:
+        if connection:
+            logging.info("PostgreSQL connection is closed")
 
 
 def main():
