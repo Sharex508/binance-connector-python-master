@@ -21,7 +21,7 @@ def table_Delete_crypto():
     try:
         with get_database_connection() as conn:
             with conn.cursor() as cursor:
-                cursor.execute("DELETE FROM trading_test")
+                cursor.execute("DELETE FROM trading")
                 logging.info("Rows deleted successfully...")
     except psycopg2.Error as e:
         logging.error(f"Error deleting rows: {e}")
