@@ -18,7 +18,7 @@ def table_Delete_crypto():
                               port="5432",
                               database="crypto") as conn:
             with conn.cursor() as cursor:
-                cursor.execute("DELETE FROM trading_test")
+                cursor.execute("DELETE FROM trading")
                 print("Rows deleted successfully...")
     except psycopg2.Error as e:
         print("Error deleting rows: ", e)
