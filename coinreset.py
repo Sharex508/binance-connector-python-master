@@ -40,12 +40,8 @@ def table_Create_crypto():
                     lastPrice         TEXT,
                     margin            TEXT,
                     purchasePrice     TEXT,
-                    ap_margin         TEXT,
-                    sell_Margin       TEXT,
+                    quantity          TEXT,
                     created_at        TEXT,
-                    marggin_time      Text,
-                    retrycount        Integer,
-                    sellretrycount    Integer,
                     status            TEXT  DEFAULT '0'
                     );
                 '''

@@ -33,3 +33,4 @@ def get_wallet_balance():
 
 if __name__ == "__main__":
     get_wallet_balance()
+

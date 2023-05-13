@@ -1,91 +1,73 @@
+import time
 import psycopg2
-from datetime import datetime as dt
-from psycopg2 import Error
-from binance.spot import Spot as Client
-from binance.lib.utils import config_logging
-import requests
+from ccxt import binance
 
+api_key = 'NGhlcbaJhbGBXzim10ij6B6MSpXq19eq5E62MOyHhWPm5sbaBxHAPSfwkOZ1o6CK'
+api_secret = 'H3RK3yPS90Foi8uRiFMBkdIpIx1TvHDIqPpDo58ZfLPlAtHclzhOAZME4YZ5Uprj'
+client = binance({
+    'apiKey': api_key,
+    'secret': api_secret
+})
 
-def get_data_from_wazirx(filter='USDT'):
-    data = requests.get('https://api.binance.com/api/v3/ticker/price').json()
+def get_db_connection():
+    connection = psycopg2.connect(
+        user="postgres",
+        password="Harsha508",
+        host="database-1.cigflazwbdyg.ap-south-1.rds.amazonaws.com",
+        port="5432",
+        database="crypto",
+    )
+    cursor = connection.cursor()
+    return connection, cursor
 
-    # Filter data to include only symbols that contain the currency in the filter.
-    resp = [d for d in data if filter in d['symbol'] and 'price' in d]
-    
-    # Update each dictionary in resp with additional keys.
-    for obj in resp:
-        lprice = float(obj['price'])
-        obj.update({
-            "lastPrice": lprice
-        })
-    
-    return resp
-
-
-def purchased_coins():
+def get_open_orders():
+    connection, cursor = get_db_connection()
     try:
-        connection = psycopg2.connect(user="postgres",
-                                       password="Twins@2018",
-                                       host="127.0.0.1",
-                                       port="5432",
-                                       database="wazirx")
-        connection.autocommit = True
-
-        cursor = connection.cursor()
-        sql = "SELECT * FROM trading_test where status='2'"
-        try:
-            cursor.execute(sql)
-            # Fetch all the rows in a list of lists.
-            results = cursor.fetchall()
-            keys = ('symbol', 'intialPrice', 'highPrice',
-                    'lastPrice', 'bp_margin', 'purchasePrice',
-                    'ap_margin', 'sell_Margin', 'created_at',
-                    'marggin_time', 'retrycount', 'sellretrycount', 'status')
-        
-            data = []
-            for obj in results:
-                data.append(dict(zip(keys, obj)))
-            return data
-
-        except Exception as e:
-            print(e)
+        sql = "SELECT symbol, purchasePrice, highPrice, quantity FROM trading WHERE status = '1'"
+        cursor.execute(sql)
+        rows = cursor.fetchall()
+        return rows
     except Exception as e:
         print(e)
     finally:
-        if connection:
-            cursor.close()
-            connection.close()
-            print("PostgreSQL connection is closed")
+        connection.close()
 
+def get_binance_prices(symbols):
+    tickers = client.fetch_tickers(symbols)
+    return {symbol: ticker['last'] for symbol, ticker in tickers.items()}
 
+def update_stop_loss(client, symbol, quantity, stop_loss_price, limit_price):
+    try:
+        order = client.create_order(
+            symbol=symbol,
+            side='SELL',
+            type='STOP_LOSS_LIMIT',
+            timeInForce='GTC',
+            quantity=quantity,
+            stopPrice=stop_loss_price,
+            price=limit_price
+        )
+        print(f"Stop loss limit order updated: {order}")
+    except Exception as e:
+        print(f"Error updating stop loss limit order: {e}")
 
+def run_stop_loss_update_loop():
+    while True:
+        try:
+            open_orders = get_open_orders()
+            symbols = [row[0] for row in open_orders]
+            binance_prices = get_binance_prices(symbols)
+            
+            for order in open_orders:
+                symbol, purchase_price, high_price, quantity = order
+                last_price = binance_prices[symbol]
+                stop_loss_price = max(purchase_price * 0.97, high_price * 0.97)
+                limit_price = stop_loss_price * 0.99
+                update_stop_loss(client, symbol, quantity, stop_loss_price, limit_price)
+            time.sleep(60)
+        except Exception as e:
+            print(f"An error occurred: {e}")
+            time.sleep(10)
 
-def coin_type():
-    purchased_data = purchased_coins()
-    wazirx_data = get_data_from_wazirx()
-    coin_type_dict = {}
-
-    for obj in purchased_data:
-        coin_symbol = obj['symbol'].replace('USDT', '')
-        for wazirx_obj in wazirx_data:
-            if coin_symbol == wazirx_obj['symbol']:
-                # Check if the coin is normal or surge
-                current_time = dt.now()
-                marggin_time = obj['marggin_time']
-                last_price = wazirx_obj['lastPrice']
-                ap_margin = obj['ap_margin']
-                if current_time < marggin_time:
-                    if last_price < ap_margin:
-                        coin_type = 'normal'
-                    else:
-                        coin_type = 'surge'
-                else:
-                    coin_type = 'unknown'
-                coin_type_dict[coin_symbol] = {'quoteAsset': wazirx_obj['quoteAsset'], 'type': coin_type}
-                break
-
-    return coin_type_dict
-
-
-
-
+if __name__ == "__main__":
+    run_stop_loss_update_loop()

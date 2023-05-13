@@ -1,10 +1,8 @@
 from tokenize import Double
 import requests
-import websockets
 from binance.spot import Spot as Client
 from binance.lib.utils import config_logging 
 from datetime import datetime as dt
-import time    
 import json
 import psycopg2
 from psycopg2.extras import execute_values
@@ -14,9 +12,9 @@ import schedule
 from notifications import notisend
 from concurrent.futures import ThreadPoolExecutor
 client = Client()
-import re
 import pandas as pd
 import ccxt
+
 
 
 
@@ -122,7 +120,8 @@ def task(db_resp, api_resp, data):
                 quantity = 100 / api_last_price
                 dbdata = {"symbol": ele, "side": "buy", "type": "limit", "price": api_last_price, "quantity": quantity, "recvWindow": 10000, "timestamp": int(time.time() * 1000)}
                 notisend({"symbol": ele, "side": "buy", "type": "limit", "initial_price": initial_price, "purchasing_price": api_last_price, "db_margin": db_margin, "quantity": quantity})
-                
+                create_limit_buy_order(dbdata['symbol'].replace('USDT', '/USDT'), dbdata['quantity'], dbdata['price'], dbdata)
+
                 # Update coin record here
                 update_coin_record(dbdata)
 
@@ -167,22 +166,29 @@ def update_coin_record(dbdata):
     try:
         print("came to database update")
         con = get_db_connection()
-        sql= "UPDATE trading  SET status = 1 ,purchasePrice= {1} WHERE symbol= {0}".format(repr(dbdata['symbol']), repr(dbdata['price']));
+        sql = "UPDATE trading SET status = 1, purchasePrice = {1}, quantity = {2} WHERE symbol = {0}".format(
+            repr(dbdata['symbol']), repr(dbdata['price']), repr(dbdata['quantity'])
+        )
         print(sql)
         con[1].execute(sql)
         con[0].commit()
         print("i was saved")
     except Exception as e:
-        print("i was fucked up")
+        print("i was messed up")
         notisend(e)
         print(e)
     finally:
         con[0].close()
 
-def show():
 
-    while 1:
-        get_diff_of_db_api_values()
-        time.sleep(10)
+def show():
+    while True:
+        try:
+            get_diff_of_db_api_values()
+            time.sleep(10)
+        except Exception as e:
+            print(f"An error occurred: {e}")
+            time.sleep(10)
+
 show()
 
