@@ -117,10 +117,10 @@ def task(db_resp, api_resp, data):
             initial_price = float(db_match_data['intialPrice'])
 
             if api_last_price >= db_margin:
-                quantity = 100 / api_last_price
+                quantity = 1 / api_last_price
                 dbdata = {"symbol": ele, "side": "buy", "type": "limit", "price": api_last_price, "quantity": quantity, "recvWindow": 10000, "timestamp": int(time.time() * 1000)}
                 notisend({"symbol": ele, "side": "buy", "type": "limit", "initial_price": initial_price, "purchasing_price": api_last_price, "db_margin": db_margin, "quantity": quantity})
-                #create_limit_buy_order(dbdata['symbol'].replace('USDT', '/USDT'), dbdata['quantity'], dbdata['price'], dbdata)
+                create_limit_buy_order(dbdata['symbol'].replace('USDT', '/USDT'), dbdata['quantity'], dbdata['price'], dbdata)
 
                 # Update coin record here
                 update_coin_record(dbdata)
@@ -145,12 +145,13 @@ price = 400  # The price at which you want to buy BNB
 def create_limit_buy_order(symbol, quantity, price):
     try:
         # Create a limit buy order
-        order = binance.create_limit_buy_order(symbol, quantity, price)
+        #order = binance.create_limit_buy_order(symbol, quantity, price)
+        order = binance.create_market_buy_order(symbol, quantity)
+
         print(f"Limit buy order created: {order}")
     except ccxt.BaseError as e:
         print(f"Error: {e}")
-        # this is for limit less order : order = binance.create_market_buy_order(symbol, quantity)
-
+        notisend( {e})
 
 
 
