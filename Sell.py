@@ -1,6 +1,8 @@
 import time
 import psycopg2
 from ccxt import binance
+from notifications import notisend
+
 
 api_key = 'NGhlcbaJhbGBXzim10ij6B6MSpXq19eq5E62MOyHhWPm5sbaBxHAPSfwkOZ1o6CK'
 api_secret = 'H3RK3yPS90Foi8uRiFMBkdIpIx1TvHDIqPpDo58ZfLPlAtHclzhOAZME4YZ5Uprj'
@@ -48,6 +50,7 @@ def update_stop_loss(client, symbol, quantity, stop_loss_price, limit_price):
             price=limit_price
         )
         print(f"Stop loss limit order updated: {order}")
+        notisend("order updated"+{order})
     except Exception as e:
         print(f"Error updating stop loss limit order: {e}")
 
