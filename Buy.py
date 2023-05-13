@@ -120,7 +120,7 @@ def task(db_resp, api_resp, data):
                 quantity = 100 / api_last_price
                 dbdata = {"symbol": ele, "side": "buy", "type": "limit", "price": api_last_price, "quantity": quantity, "recvWindow": 10000, "timestamp": int(time.time() * 1000)}
                 notisend({"symbol": ele, "side": "buy", "type": "limit", "initial_price": initial_price, "purchasing_price": api_last_price, "db_margin": db_margin, "quantity": quantity})
-                create_limit_buy_order(dbdata['symbol'].replace('USDT', '/USDT'), dbdata['quantity'], dbdata['price'], dbdata)
+                #create_limit_buy_order(dbdata['symbol'].replace('USDT', '/USDT'), dbdata['quantity'], dbdata['price'], dbdata)
 
                 # Update coin record here
                 update_coin_record(dbdata)
@@ -128,8 +128,8 @@ def task(db_resp, api_resp, data):
 
 
 # Replace these with your Binance API key and secret key
-api_key = 'NGhlcbaJhbGBXzim10ij6B6MSpXq19eq5E62MOyHhWPm5sbaBxHAPSfwkOZ1o6CK'
-api_secret = 'H3RK3yPS90Foi8uRiFMBkdIpIx1TvHDIqPpDo58ZfLPlAtHclzhOAZME4YZ5Uprj'
+api_key = 'qelJwKu3TDFUzM3ZUBR1tLsQIgRXcVL2FrQwq4MHh0pi9V3lc76CffgYqnqoO9V5'
+api_secret = 'MIF6NZpnBRLSPpCwizeURQZnagcSriTOKX0U7OpZrGU3sRgNms8wcjUd00kW6xRf'
 client = Client(api_key, api_secret)
 # Initialize Binance client with ccxt
 binance = ccxt.binance({

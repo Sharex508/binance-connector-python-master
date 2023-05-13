@@ -4,8 +4,8 @@ from binance.spot import Spot as Client
 import ccxt
 
 # Set up Binance client
-api_key = 'NGhlcbaJhbGBXzim10ij6B6MSpXq19eq5E62MOyHhWPm5sbaBxHAPSfwkOZ1o6CK'
-api_secret = 'H3RK3yPS90Foi8uRiFMBkdIpIx1TvHDIqPpDo58ZfLPlAtHclzhOAZME4YZ5Uprj'
+api_key = 'qelJwKu3TDFUzM3ZUBR1tLsQIgRXcVL2FrQwq4MHh0pi9V3lc76CffgYqnqoO9V5'
+api_secret = 'MIF6NZpnBRLSPpCwizeURQZnagcSriTOKX0U7OpZrGU3sRgNms8wcjUd00kW6xRf'
 client = Client(api_key, api_secret)
 
 def get_wallet_balance():
