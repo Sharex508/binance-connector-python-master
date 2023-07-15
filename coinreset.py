@@ -11,7 +11,7 @@ def get_database_connection():
     return psycopg2.connect(
         user="postgres",
         password="Harsha508",
-        host="database-1.cigflazwbdyg.ap-south-1.rds.amazonaws.com",
+        host="harshadb.ctncsqozwwve.ap-south-1.rds.amazonaws.com",
         port="5432",
         database="crypto",
     )
