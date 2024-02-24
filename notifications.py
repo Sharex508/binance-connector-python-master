@@ -21,4 +21,4 @@ def notisend(msg):
         print(f'Failed to send message. Status code: {response.status_code}')
 
 # Example usage:
-notisend('Hello, world! This is a test message from my Telegram bot.')
+#notisend('Hello, world! This is a test message from my Telegram bot.')
