@@ -11,6 +11,6 @@ def notisend(msg):
 
     # Create json link with message
   #  data = {'chat_id': userID, 'text': message}
-    data = {'chat_id': userID, 'text': fuuckoff harsha}
+    data = {'chat_id': userID, 'text': 'fuuckoff harsha'}
     # POST the message
     requests.post(url, data)
