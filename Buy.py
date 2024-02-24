@@ -51,11 +51,11 @@ def get_data_from_wazirx(filter='USDT'):
 def get_results():
     connection = None
     try:
-        connection = psycopg2.connect(user="postgres",
-                                  password="Harsha508",
-                                  host="harshacrypto.cf0e8ug6ynu6.ap-south-1.rds.amazonaws.com",
-                                  port="5432",
-                                  database="crypto")
+        connection = psycopg2.connect( user="postgres",
+        password="Harsha508",
+        host="harshacrypto.cf0e8ug6ynu6.ap-south-1.rds.amazonaws.com",
+        port="5432",
+        database="crypto")
         connection.autocommit = True
 
         cursor = connection.cursor()
