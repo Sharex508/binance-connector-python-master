@@ -1,6 +1,6 @@
 from tokenize import Double
 import requests
-from binance.spot import Spot as Client
+from binance.spot import Spot
 from binance.lib.utils import config_logging 
 from datetime import datetime as dt
 import json
