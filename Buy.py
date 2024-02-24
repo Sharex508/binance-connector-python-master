@@ -121,7 +121,7 @@ def task(db_resp, api_resp, data):
                 quantity = 1 / api_last_price
                 dbdata = {"symbol": ele, "side": "buy", "type": "limit", "price": api_last_price, "quantity": quantity, "recvWindow": 10000, "timestamp": int(time.time() * 1000)}
                 notisend({"symbol": ele, "side": "buy", "type": "limit", "initial_price": initial_price, "purchasing_price": api_last_price, "db_margin": db_margin, "quantity": quantity})
-                create_limit_buy_order(dbdata['symbol'].replace('USDT', '/USDT'), dbdata['quantity'], dbdata['price'], dbdata)
+                #create_limit_buy_order(dbdata['symbol'].replace('USDT', '/USDT'), dbdata['quantity'], dbdata['price'], dbdata)
 
                 # Update coin record here
                 update_coin_record(dbdata)
