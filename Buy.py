@@ -21,11 +21,11 @@ import ccxt
 
 
 def get_db_connection():
-    connection = psycopg2.connect(user="postgres",
-                                  password="Harsha508",
-                                  host="harshacrypto.cf0e8ug6ynu6.ap-south-1.rds.amazonaws.com",
-                                  port="5432",
-                                  database="crypto")
+    connection = psycopg2.connect( user="postgres",
+        password="Harsha508",
+        host="harshacrypto.cf0e8ug6ynu6.ap-south-1.rds.amazonaws.com",
+        port="5432",
+        database="crypto")
 
     cursor = connection.cursor()
     return connection, cursor
