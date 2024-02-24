@@ -1,3 +1,4 @@
+harshacrypto.cf0e8ug6ynu6.ap-south-1.rds.amazonaws.com
 from tokenize import Double
 import requests
 from binance.spot import Spot as Client
@@ -22,7 +23,7 @@ import ccxt
 def get_db_connection():
     connection = psycopg2.connect(user="postgres",
                                   password="Harsha508",
-                                  host="database-1.cigflazwbdyg.ap-south-1.rds.amazonaws.com",
+                                  host="harshacrypto.cf0e8ug6ynu6.ap-south-1.rds.amazonaws.com",
                                   port="5432",
                                   database="crypto")
 
@@ -52,7 +53,7 @@ def get_results():
     try:
         connection = psycopg2.connect(user="postgres",
                                   password="Harsha508",
-                                  host="database-1.cigflazwbdyg.ap-south-1.rds.amazonaws.com",
+                                  host="harshacrypto.cf0e8ug6ynu6.ap-south-1.rds.amazonaws.com",
                                   port="5432",
                                   database="crypto")
         connection.autocommit = True
