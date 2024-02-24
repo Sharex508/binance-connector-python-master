@@ -2,8 +2,8 @@ import requests
 import json
 
 def notisend(msg):
-    token = 'your_bot_token_here'
-    userID = 123456789  # Replace with your user ID
+    token = '6883463112:AAGTCi7kkguV2-3e_4HMR2vD75WjLbqce7U'
+    userID = 1893850031  # Replace with your user ID
 
     # Create URL for sending messages
     url = f'https://api.telegram.org/bot{token}/sendMessage'
