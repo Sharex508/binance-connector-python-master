@@ -1,4 +1,3 @@
-harshacrypto.cf0e8ug6ynu6.ap-south-1.rds.amazonaws.com
 from tokenize import Double
 import requests
 from binance.spot import Spot as Client
